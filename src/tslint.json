@@ -15,11 +15,7 @@
       ],
       "variable-name": {
         "options": ["ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
-<<<<<<< HEAD
-      }
-=======
       },
       "object-literal-shorthand": false
->>>>>>> feat/basic-todo-functionality
     }
   }

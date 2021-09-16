@@ -8,9 +8,22 @@ import {
 import Todo from '../../models/todo';
 import { ObjectID } from 'bson';
 import ServerResponse from '../../models/server-response';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@material-ui/core';
 
-type TodoListViewProps = { newTodo: Promise<void> };
+enum SortTodosType {
+  byFinished,
+  byUnfinished,
+}
+
+type TodoListViewProps = { newTodo?: Promise<void> };
 type TodoListViewState = { todos: Todo[]; newTodoName: string };
+
 export default class TodoListView extends React.Component<
   TodoListViewProps,
   TodoListViewState
@@ -29,6 +42,7 @@ export default class TodoListView extends React.Component<
     this.updateTodo = this.updateTodo.bind(this);
     this.updateInputValue = this.updateInputValue.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
+    this.sortTodos = this.sortTodos.bind(this);
   }
 
   async componentDidMount() {
@@ -48,7 +62,7 @@ export default class TodoListView extends React.Component<
       isDone: false,
     });
     const serverResponse: ServerResponse = await this.todoRepository.newTodo(
-      todo.toJson()
+      todo.toJson(),
     );
 
     if (ServerResponse.isOK(serverResponse.statusCode)) {
@@ -63,7 +77,7 @@ export default class TodoListView extends React.Component<
 
   async updateTodo(e) {
     const index = this.state.todos.findIndex(
-      (todo: Todo) => todo._id === e.target.id
+      (todo: Todo) => todo._id === e.target.id,
     );
     const updatedTodos = this.state.todos;
     updatedTodos[index].isDone = e.target.checked;
@@ -79,13 +93,13 @@ export default class TodoListView extends React.Component<
   async deleteTodo(e) {
     e.preventDefault();
     const serverResponse: ServerResponse = await this.todoRepository.deleteTodo(
-      e.target.id
+      e.target.id,
     );
 
     if (ServerResponse.isOK(serverResponse.statusCode)) {
       const updatedTodoList = this.state.todos;
       const index = updatedTodoList.findIndex(
-        (todo: Todo) => todo._id === e.target.id
+        (todo: Todo) => todo._id === e.target.id,
       );
       updatedTodoList.splice(index, 1);
       this.setState({
@@ -101,11 +115,32 @@ export default class TodoListView extends React.Component<
     });
   }
 
+  sortTodos(e) {
+    const sortedTodos = this.state.todos.sort((l, r) => {
+      if (l.isDone && !r.isDone) {
+        return 1;
+      }
+      return -1;
+    });
+    switch (e.target.value) {
+      case SortTodosType.byFinished:
+        this.setState({
+          todos: sortedTodos.reverse(),
+        });
+        break;
+      case SortTodosType.byUnfinished:
+        this.setState({
+          todos: sortedTodos,
+        });
+        break;
+    }
+  }
+
   render() {
     return (
       <>
-        <div className="flex-column text-center justify-content-center">
-          <form onSubmit={this.newTodo} className="d-flex w-75 mt-4">
+        <div style={{ width: '75%', margin: '0 auto' }} className="todo-list">
+          <form onSubmit={this.newTodo} className="d-flex mt-4">
             <input
               type="text"
               className="form-control w-75"
@@ -113,11 +148,28 @@ export default class TodoListView extends React.Component<
               value={this.state.newTodoName}
               onChange={this.updateInputValue}
             />
-            <button className="btn btn-primary w-25" type="submit">
+            <Button
+              className="bg-primary text-light w-25"
+              type="submit"
+              variant="contained"
+            >
               Dodaj
-            </button>
+            </Button>
           </form>
-          
+
+          <FormControl className="w-25 mt-2">
+            <InputLabel id="select-label">Sortuj po</InputLabel>
+            <Select
+              labelId="select-label"
+              id="select"
+              onChange={this.sortTodos}
+            >
+              <MenuItem value={SortTodosType.byFinished}>ukończonych</MenuItem>
+              <MenuItem value={SortTodosType.byUnfinished}>
+                nieukończonych
+              </MenuItem>
+            </Select>
+          </FormControl>
 
           <div className="d-flex flex-column  mt-3">
             {this.state.todos.map((todo: Todo) => (

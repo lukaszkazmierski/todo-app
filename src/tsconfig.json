@@ -14,10 +14,7 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-<<<<<<< HEAD
-=======
     "experimentalDecorators": true,
->>>>>>> feat/basic-todo-functionality
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"

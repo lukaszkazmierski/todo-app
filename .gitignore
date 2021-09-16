@@ -9,17 +9,11 @@
 /coverage
 
 # next.js
-<<<<<<< HEAD
-/.next/
-/out/
-
-=======
 **/.next/
 
 /out/
 
 
->>>>>>> feat/basic-todo-functionality
 # production
 /build
 

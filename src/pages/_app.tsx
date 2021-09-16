@@ -1,11 +1,4 @@
 import type { AppProps } from 'next/app';
-<<<<<<< HEAD
-
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
-export default MyApp;
-=======
 import Head from 'next/head';
 
 function App({ Component, pageProps }: AppProps) {
@@ -19,4 +12,3 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 export default App;
->>>>>>> feat/basic-todo-functionality

@@ -1,24 +1,32 @@
+import { Button, Checkbox } from '@material-ui/core';
 import 'bootstrap/dist/css/bootstrap.css';
+import React from 'react';
 
 const TodoListTile = ({ todo, onDelete, onUpdate }) => {
   return (
-    <div className="d-flex w-75 p-2 my-auto border border-dark mt-3">
+    <div
+      className={`d-flex p-2 my-auto ${
+        todo.isDone ? '' : 'border border-dark'
+      } mt-3`}
+      style={{ background: todo.isDone ? 'rgba(209, 212, 211, .5)' : null }}
+    >
       <div className="p-2 my-auto">
-        <input id={todo._id} type="checkbox" checked={todo.isDone} onChange={onUpdate}/>
-      </div>
-      <div className="p-2 my-auto fs-5">{todo.name}</div>
-      <div className="ms-auto p-2">
-        <button className="btn btn-success mx-2" type="submit">
-          Edytuj
-        </button>
-        <button
-          onClick={onDelete}
-          className="btn btn-outline-danger mx-2"
+        <Checkbox
           id={todo._id}
-          type="submit"
+          defaultChecked={todo.isDone}
+          onChange={onUpdate}
+        />
+      </div>
+      <div className="p-2 fs-4">{todo.name}</div>
+      <div className="ms-auto p-2">
+        <Button
+          className="border border-danger text-danger mx-2 mt-1"
+          onClick={onDelete}
+          id={todo._id}
+          variant="outlined"
         >
           Usuń
-        </button>
+        </Button>
       </div>
     </div>
   );

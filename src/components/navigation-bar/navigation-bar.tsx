@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import 'bootstrap/dist/css/bootstrap.css';
-import { AppBar, Box, IconButton, Toolbar , Typography, Button } from '@material-ui/core';
+import { AppBar, Box, Toolbar , Typography } from '@material-ui/core';
 
 const NavigationBar: NextPage = () => {
   return (

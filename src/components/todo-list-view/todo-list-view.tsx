@@ -85,6 +85,8 @@ export default class TodoListView extends React.Component<
       updatedTodos[index],
     );
 
+    console.log(this.state.todos.filter(todo => todo.isDone))
+
     this.setState({
       todos: updatedTodos,
     });

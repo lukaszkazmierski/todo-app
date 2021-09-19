@@ -1,4 +1,4 @@
-## Prosta aplikacja TODO
+# Prosta aplikacja TODO
 
 ## Opis:
 
